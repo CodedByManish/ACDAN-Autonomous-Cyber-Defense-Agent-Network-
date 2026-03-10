@@ -1,7 +1,7 @@
 # main_pipeline.py
 import os
-from apps.detection.inference_engine import AnomalyDetectionInference
-from apps.reasoning.threat_analyzer import LLMThreatAnalyzer
+from apps.detection.ml_logic.inference import AnomalyDetectionInference
+from apps.reasoning.rag_logic.threat_analyzer import LLMThreatAnalyzer
 
 def run_acdan_demo():
     # 1. Initialize Detection (Phase 2)

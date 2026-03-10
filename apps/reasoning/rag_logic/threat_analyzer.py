@@ -12,7 +12,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from agents.llm_reasoning.prompt_templates import (
+from prompt_templates import (
     THREAT_ANALYSIS_PROMPT,
     CVE_CONTEXT_PROMPT,
     RESPONSE_RECOMMENDATION_PROMPT,

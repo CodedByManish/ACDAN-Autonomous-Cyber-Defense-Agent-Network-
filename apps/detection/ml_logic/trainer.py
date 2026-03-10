@@ -22,8 +22,8 @@ from typing import Dict, Tuple
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from agents.anomaly_detection.preprocessor import DataPreprocessor
-from agents.anomaly_detection.model import TransformerAnomalyDetector, SimpleDNNAnomalyDetector
+from preprocessor import DataPreprocessor
+from model import TransformerAnomalyDetector, SimpleDNNAnomalyDetector
 
 
 class AnomalyDetectionTrainer:
