@@ -69,6 +69,46 @@ ACDAN/
 ```
 
 
-move agents\anomaly_detection\preprocessor.py       apps\detection\ml_logic\
-move agents\anomaly_detection\model.py              apps\detection\ml_logic\
-move agents\anomaly_detection\trainer.py            apps\detection\ml_logic\
+
+
+---
+# ACDAN: AI-Driven Cyber Defense & Analytics Network
+
+ACDAN is a multi-agent cybersecurity framework that combines Machine Learning, LLMs, and Reinforcement Learning.
+
+## 🚀 Current Features
+- **Phase 2 (Detection):** PyTorch-based Deep Neural Network for traffic classification.
+- **Phase 3 (Reasoning):** Mistral LLM (via Ollama) for expert threat analysis.
+- **Phase 4 (Response):** DQN-based Reinforcement Learning for mitigation strategy.
+- **Phase 5 (RAG):** FAISS Vector database for real-time CVE intelligence lookup.
+
+## 🛠️ Tech Stack
+- **Backend:** Django
+- **AI/ML:** PyTorch, Scikit-learn, FAISS
+- **LLM:** Ollama (Mistral)
+- **Database:** SQLite (for logs)
+---
+
+
+
+
+
+# Run DNN Trainer
+
+```bash
+python apps/detection/ml_logic/trainer.py \
+    --dataset data/processed/balanced_data.csv \
+    --model-type dnn \
+    --epochs 10 \
+    --batch-size 64
+
+
+What it does:
+
+Scales and preprocesses the CIC-IDS dataset.
+Saves preprocessor.pkl and metadata.json in data/models/.
+Trains SimpleDNN from model.py.
+Saves best_model.pt to data/models/.
+
+
+

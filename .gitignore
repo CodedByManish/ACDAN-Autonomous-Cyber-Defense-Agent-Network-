@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Data and Models (Too big for GitHub)
+data/raw/
+data/processed/
+data/models/*.pt
+data/models/*.pkl
+data/cve_db/*.faiss
+
+# Django
+db.sqlite3
+local_settings.py

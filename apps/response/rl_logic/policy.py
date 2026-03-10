@@ -10,8 +10,8 @@ import json
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from agents.rl_response.dqn_agent import DQNAgent
-from agents.rl_response.environment import ThreatResponseEnvironment, ResponseActions
+from dqn_agent import DQNAgent
+from environment import ThreatResponseEnvironment, ResponseActions
 
 
 class ResponsePolicy:

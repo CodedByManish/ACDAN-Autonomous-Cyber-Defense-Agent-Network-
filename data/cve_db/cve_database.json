@@ -1,0 +1,52 @@
+[
+  {
+    "id": "CVE-2023-12345",
+    "description": "Buffer overflow in Apache HTTP Server",
+    "attack_vector": "NETWORK",
+    "impact": "CRITICAL",
+    "affected_versions": [
+      "2.4.0-2.4.54"
+    ],
+    "remediation": "Upgrade to Apache 2.4.55 or later"
+  },
+  {
+    "id": "CVE-2023-54321",
+    "description": "SQL Injection vulnerability in WordPress",
+    "attack_vector": "NETWORK",
+    "impact": "HIGH",
+    "affected_versions": [
+      "6.0-6.2"
+    ],
+    "remediation": "Update WordPress to version 6.2.3"
+  },
+  {
+    "id": "CVE-2023-99999",
+    "description": "Privilege escalation in Linux kernel",
+    "attack_vector": "LOCAL",
+    "impact": "CRITICAL",
+    "affected_versions": [
+      "5.10-6.1"
+    ],
+    "remediation": "Apply kernel security patch"
+  },
+  {
+    "id": "CVE-2023-11111",
+    "description": "Remote Code Execution in Nginx",
+    "attack_vector": "NETWORK",
+    "impact": "CRITICAL",
+    "affected_versions": [
+      "1.20-1.24"
+    ],
+    "remediation": "Upgrade Nginx to 1.24.1"
+  },
+  {
+    "id": "CVE-2023-22222",
+    "description": "Authentication bypass in SSH",
+    "attack_vector": "NETWORK",
+    "impact": "CRITICAL",
+    "affected_versions": [
+      "7.0-8.0"
+    ],
+    "remediation": "Update SSH server and disable key exchange methods"
+  }
+]
