@@ -4,19 +4,19 @@ ACDAN is a multi-agent cybersecurity framework designed to automate the lifecycl
 
 ---
 
-## Current Features
+## Features
 - **Phase 1 (Detection):** PyTorch-based Deep Neural Network for traffic classification.
 - **Phase 2 (Reasoning):** Mistral LLM (via Ollama) for expert threat analysis.
 - **Phase 3 (Response):** DQN-based Reinforcement Learning for mitigation strategy.
 - **Phase 4 (RAG):** FAISS Vector database for real-time CVE intelligence lookup.
 
-## 🛠️ Tech Stack
+
+## Tech Stack
 - **Backend:** Django
 - **AI/ML:** PyTorch, Scikit-learn, FAISS
 - **LLM:** Ollama (Mistral)
 - **Database:** SQLite (for logs)
 
----
 
 ## Project Structure
 
@@ -75,7 +75,6 @@ ACDAN/
     └── test_pipeline.py        # End-to-end integration testing
 ```
 
----
 
 ## Architecture
 ```text
@@ -84,18 +83,18 @@ ACDAN/
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
 │  NETWORK TRAFFIC  ──▶  [DETECTION AGENT]  ──▶  INFERENCE ENGINE         │
-│  (CIC-IDS-2017)        (PyTorch DNN)           (Class + Confidence)     │
+│  (CIC-IDS-2017)        (PyTorch DNN)           (Class + Confidence)    │
 │                                                     │                   │
 │                                                     ▼                   │
-│  VULNERABILITY    ──▶  [RAG INTELLIGENCE] ──▶  CONTEXT RETRIEVAL        │
+│  VULNERABILITY    ──▶  [RAG INTELLIGENCE] ──▶  CONTEXT RETRIEVAL       │
 │  DB (CVE-JSON)         (FAISS / BERT)          (Threat Intelligence)    │
 │                                                     │                   │
 │                                                     ▼                   │
-│  EXPERT SUMMARY   ◀──  [REASONING AGENT]  ──▶  LLM ANALYSIS             │
+│  EXPERT SUMMARY   ◀──  [REASONING AGENT]  ──▶  LLM ANALYSIS            │
 │  (Threat Context)      (Mistral / Ollama)      (Vector Contextualized)  │
 │                                                     │                   │
 │                                                     ▼                   │
-│  MITIGATION       ◀──  [RESPONSE AGENT]   ──▶  DECISION ENGINE          │
+│  MITIGATION       ◀──  [RESPONSE AGENT]   ──▶  DECISION ENGINE         │
 │  (Block/Limit)         (DQN / RL Agent)        (Policy Optimization)    │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -103,13 +102,12 @@ ACDAN/
 
 ---
 
-
-# Setup and Usage
+## Setup and Usage
 
 **Follow these steps to set up, train, and run the Detection Agent platform.**
 
 
-## 1. Data Initialization
+### 1. Data Initialization
 ```bash
 # Balance the dataset
 python scripts/create_balanced_data.py
@@ -119,7 +117,7 @@ python scripts/initialize_rag.py
 ```
 
 
-## 2. Model Training
+### 2. Model Training
 ```bash
 # Train the Detection Agent's brain using the processed dataset
 
@@ -130,7 +128,7 @@ python apps/detection/ml_logic/trainer.py \
     --batch-size 64
 ```
 
-## 3. Running the Platform
+### 3. Running the Platform
 ```bash
 # Terminal 1: Start the local LLM engine
 ollama serve
@@ -141,7 +139,7 @@ python manage.py runserver
 ```
 
 
-## 4. Integration Testing
+### 4. Integration Testing
 ```bash
 # Validate the full pipeline from detection to response
 python scripts/test_pipeline.py
