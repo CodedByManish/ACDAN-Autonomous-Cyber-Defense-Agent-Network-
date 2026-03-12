@@ -2,7 +2,6 @@
 
 ACDAN is a multi-agent cybersecurity framework designed to automate the lifecycle of network threat management. It integrates deep learning for detection, Large Language Models (LLMs) with Retrieval-Augmented Generation (RAG) for expert reasoning, and Reinforcement Learning (RL) for autonomous response mitigation.
 
----
 
 ## Features
 - **Phase 1 (Detection):** PyTorch-based Deep Neural Network for traffic classification.
@@ -82,8 +81,8 @@ ACDAN/
 │              ACDAN SYSTEM WORKFLOW (PIPELINE)                           │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│  NETWORK TRAFFIC  ──▶  [DETECTION AGENT]  ──▶  INFERENCE ENGINE         │
-│  (CIC-IDS-2017)        (PyTorch DNN)           (Class + Confidence)    │
+│  NETWORK TRAFFIC  ──▶  [DETECTION AGENT]  ──▶  INFERENCE ENGINE        │
+│  (CIC-IDS-2017)        (PyTorch DNN)           (Class + Confidence)     │
 │                                                     │                   │
 │                                                     ▼                   │
 │  VULNERABILITY    ──▶  [RAG INTELLIGENCE] ──▶  CONTEXT RETRIEVAL       │
@@ -153,7 +152,6 @@ python scripts/test_pipeline.py
 - **Feature Set:** 79 network flow features  
 - **Device Support:** CPU / CUDA (auto-detect)  
 
----
 
 ## System Requirements
 

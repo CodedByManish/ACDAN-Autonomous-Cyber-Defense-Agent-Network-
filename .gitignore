@@ -4,7 +4,6 @@ __pycache__/
 *$py.class
 venv/
 .env
-note.md
 
 # Data and Models (Too big for GitHub)
 data/raw/
