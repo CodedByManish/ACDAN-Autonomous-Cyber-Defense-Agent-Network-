@@ -284,20 +284,23 @@ def main():
     parser = argparse.ArgumentParser(description="Train anomaly detection model")
     parser.add_argument("--dataset", type=str, required=True, help="Path to dataset CSV")
     parser.add_argument("--model-type", type=str, default="dnn", choices=["dnn", "transformer"])
-    parser.add_argument("--epochs", type=int, default=50)
-    parser.add_argument("--batch-size", type=int, default=32)
+    parser.add_argument("--epochs", type=int, default=10)
+    parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--learning-rate", type=float, default=0.001)
     parser.add_argument("--models-path", type=str, default="./data/models")
     
     args = parser.parse_args()
     
-    # Preprocess data
+    # Ensure the models directory exists
+    os.makedirs(args.models_path, exist_ok=True)
+    
     print("Preprocessing data...")
     preprocessor = DataPreprocessor(test_size=0.2)
+    
     X_train, X_test, y_train, y_test, metadata = preprocessor.prepare_data(
         args.dataset,
-        target_col='label',
-        categorical_cols=['protocol_type', 'service', 'flag']
+        target_col='Label', 
+        categorical_cols=[] 
     )
     
     # Save preprocessor

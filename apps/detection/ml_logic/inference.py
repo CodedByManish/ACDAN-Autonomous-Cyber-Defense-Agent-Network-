@@ -95,48 +95,68 @@ class AnomalyDetectionInference:
         return [self.predict_single(features) for features in batch_features]
 
     def _map_threat_level(self, attack_class: str) -> str:
-        """Convert predicted class to threat level."""
-        mapping = {
-            "normal": "LOW",
-            "probe": "MEDIUM",
-            "dos": "HIGH",
-            "r2l": "CRITICAL",
-            "u2r": "CRITICAL",
-        }
-        return mapping.get(attack_class.lower(), "UNKNOWN")
+        """
+        Convert CIC-IDS-2017 predicted classes to threat levels.
+        """
+        # Normalize the class name to handle case sensitivity and special characters
+        cls = attack_class.upper().strip()
+        
+        if cls == 'BENIGN':
+            return "LOW"
+        
+        if 'PORTSCAN' in cls:
+            return "MEDIUM"
+        
+        # High threats (DoS / Brute Force / Bot / SQL Injection)
+        if any(x in cls for x in ['DOS', 'DDOS', 'PATATOR', 'BRUTE FORCE']):
+            return "HIGH"
+        
+        # Critical threats (Infiltration / Web Attacks / Heartbleed)
+        if any(x in cls for x in ['INFILTRATION', 'WEB ATTACK', 'HEARTBLEED', 'BOT', 'SQL']):
+            return "CRITICAL"
+        
+        return "UNKNOWN"
 
     def get_class_explanation(self, attack_class: str) -> Dict:
-        """Return explanation for predicted attack class."""
-
+        """
+        Return detailed explanations based on CIC-IDS-2017 labels.
+        """
+        cls = attack_class.upper().strip()
+        
         explanations = {
-            "normal": {
-                "description": "Normal network traffic",
-                "risk": "No threat detected",
-                "indicators": "Standard communication patterns",
+            "BENIGN": {
+                "description": "Legitimate network traffic.",
+                "risk": "Minimal",
+                "indicators": "Standard behavior patterns."
             },
-            "probe": {
-                "description": "Reconnaissance activity",
-                "risk": "Network scanning for vulnerabilities",
-                "indicators": "Port scans, service enumeration",
+            "DDOS": {
+                "description": "Distributed Denial of Service.",
+                "risk": "Total service unavailability.",
+                "indicators": "Massive volumetric traffic from multiple sources."
             },
-            "dos": {
-                "description": "Denial of Service attack",
-                "risk": "Service disruption",
-                "indicators": "High traffic volume, resource exhaustion",
+            "DOS HULK": {
+                "description": "DoS HTTP Unbearable Load King.",
+                "risk": "Web server resource exhaustion.",
+                "indicators": "High volume of unique HTTP requests."
             },
-            "r2l": {
-                "description": "Remote to Local intrusion",
-                "risk": "Unauthorized system access",
-                "indicators": "Repeated login attempts, protocol abuse",
+            "PORTSCAN": {
+                "description": "Port scanning/Reconnaissance.",
+                "risk": "Information gathering for future attacks.",
+                "indicators": "Sequential attempts to connect to multiple ports."
             },
-            "u2r": {
-                "description": "User to Root escalation",
-                "risk": "Privilege escalation",
-                "indicators": "Suspicious system calls, permission bypass",
-            },
+            "INFILTRATION": {
+                "description": "Internal network penetration.",
+                "risk": "Data exfiltration and lateral movement.",
+                "indicators": "Exploiting vulnerable internal software."
+            }
         }
 
-        return explanations.get(
-            attack_class.lower(),
-            {"description": "Unknown attack", "risk": "Undefined"},
-        )
+        # Return specific explanation or a generic one for attacks not listed above
+        if cls in explanations:
+            return explanations[cls]
+        
+        return {
+            "description": f"Detected {attack_class} activity.",
+            "risk": "Potential security breach.",
+            "indicators": "Anomalous traffic features detected by AI."
+        }
