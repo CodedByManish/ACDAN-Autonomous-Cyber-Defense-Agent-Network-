@@ -1,48 +1,34 @@
-# Core Backend
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-pydantic==2.5.0
-pydantic-settings==2.1.0
+# Web Framework
+django
+djangorestframework
+django-cors-headers
+channels[daphne]      # For WebSockets 
 
-# ML & Data
-torch>=2.10.0
-torchvision>=0.21.0
-torchaudio>=2.10.0
-numpy>=2.3.5
+# Data Science & ML
+torch
+torchvision
+torchaudio
+numpy
+pandas
+scikit-learn
+scipy
+joblib
+ninja
 
-joblib==1.5.3
-pandas==3.0.1
-python-dateutil==2.9.0.post0
-scikit-learn==1.8.0
-scipy==1.17.1
-threadpoolctl==3.6.0
+# NLP & RAG
+transformers
+sentence-transformers
+ollama
+faiss-cpu
 
-# NLP & LLM
-transformers==4.35.2
-sentence-transformers==5.2.3
-ollama==0.0.11
-python-dotenv==1.2.2
-
-# RAG & Vector Search
-faiss-cpu==1.13.2
-
-# Redis & Async
-redis==5.0.1
-aioredis==2.0.1
-
-# Elasticsearch
-elasticsearch==8.10.0
-
-# Real-time
-websockets==12.0
-
-# Testing
-pytest==7.4.3
-pytest-asyncio==0.21.1
-httpx==0.25.1
+# Database & Services
+redis
+elasticsearch
+python-dotenv
+requests
+pytz
+pyyaml
 
 # Utilities
-python-dotenv==1.0.0
-pyyaml==6.0.1
-requests==2.31.0
-pytz==2023.3
+pydantic            
+pydantic-settings

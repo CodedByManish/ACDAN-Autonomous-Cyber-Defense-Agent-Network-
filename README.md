@@ -38,6 +38,10 @@ ACDAN/
 │   │   │   ├── preprocessor.py # Scaling and CIC-IDS label encoding
 │   │   │   ├── trainer.py      # Training loop for model artifacts
 │   │   │   └── inference.py    # Real-time classification engine
+|   |   ├── api.py                 # Django Ninja Routes (POST /analyze)
+|   |   ├──schemas.py             # Data Validation (Pydantic-style)
+|   |   ├──services.py            # Bridge: Connects API to ml_logic/inference.py
+|   |   ├── models.py              # ThreatAlert database table
 │   │   ├── views.py            # Analyze API endpoint
 │   │   └── urls.py
 │   │
