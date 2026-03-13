@@ -5,7 +5,7 @@ from .models import ThreatAlert
 
 router = Router()
 
-@router.post("/analyze", response=PredictionResponse)
+@router.post("/analyze")
 def analyze_packet(request, data: IngestLogRequest):
     # Pass the WHOLE features dictionary from the request to the model
     prediction = detection_service.predict(data.features)
