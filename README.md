@@ -2,7 +2,6 @@
 
 ACDAN is a multi-agent cybersecurity framework designed to automate the lifecycle of network threat management. It integrates deep learning for detection, Large Language Models (LLMs) with Retrieval-Augmented Generation (RAG) for expert reasoning, and Reinforcement Learning (RL) for autonomous response mitigation.
 
-
 ## Features
 - **Phase 1 (Detection):** PyTorch-based Deep Neural Network for traffic classification.
 - **Phase 2 (Reasoning):** Mistral LLM (via Ollama) for expert threat analysis.
