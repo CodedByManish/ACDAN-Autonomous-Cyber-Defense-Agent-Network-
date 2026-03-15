@@ -61,41 +61,46 @@ class ReasoningService:
 
     def generate_analysis(self, detection_data: dict):
         attack_type = detection_data.get("predicted_class", "Unknown")
-        rag_context = self._get_get_rag_context(attack_type)
+        
+        # 1. FIX THE NAME HERE (Removed the extra '_get_')
+        rag_context = self._get_rag_context(attack_type) 
         
         prompt = f"""
+        [SYSTEM: SENIOR CYBERSECURITY ANALYST]
         Analyze the following cyber threat: {attack_type}.
         Context: {rag_context}
-        Return ONLY a JSON object with keys "threat_summary" (string) and "recommendations" (list of strings).
+        Return ONLY a JSON object with keys:
+        "threat_summary": (string explanation)
+        "recommendations": (list of 3 strings)
         """
         
         try:
             response = ollama.generate(model=self.model_name, prompt=prompt)
             raw_res = response.get('response', '')
             
-            # Print for debugging in the server console
-            print(f"----- MISTRAL RAW OUTPUT -----\n{raw_res}\n----------------------")
+            print(f"--- MISTRAL RAW OUTPUT ---\n{raw_res}\n--------------------------")
 
             start = raw_res.find('{')
             end = raw_res.rfind('}') + 1
             
-            if start != -1 and end != 0:
+            if start != -1 and end > start:
                 analysis_json = json.loads(raw_res[start:end])
             else:
-                raise ValueError("No JSON brackets found in response")
+                raise ValueError("No valid JSON found")
 
         except Exception as e:
             print(f"Reasoning logic failed: {e}")
-            # Fallback so the API doesn't crash
             analysis_json = {
-                "threat_summary": "AI reasoning failed to parse correctly.",
-                "recommendations": ["Check network logs manually", "Isolate affected host"]
+                "threat_summary": f"Detection confirmed {attack_type}. Automated reasoning encountered an error.",
+                "recommendations": ["Verify network traffic", "Update firewall rules"]
             }
 
+        # Ensure the keys here match exactly what the Test Script is looking for
         return {
-            **analysis_json,
+            "threat_summary": analysis_json.get("threat_summary", "No summary provided"),
+            "recommendations": analysis_json.get("recommendations", []),
             "risk_level": detection_data.get("threat_level", "HIGH"),
-            "cve_context_used": rag_context[:200]
+            "cve_context_used": rag_context[:200] if rag_context else "None"
         }
 
 # Instantiate once
