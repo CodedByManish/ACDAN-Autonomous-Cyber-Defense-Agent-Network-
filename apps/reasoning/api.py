@@ -1,6 +1,8 @@
 from ninja import Router, Schema
 from .services import reasoning_service
+import logging
 
+logger = logging.getLogger(__name__)
 router = Router()
 
 class ReasoningRequest(Schema):
@@ -10,6 +12,9 @@ class ReasoningRequest(Schema):
 
 @router.post("/reason")
 def reason_threat(request, data: ReasoningRequest):
-    # Convert Schema to dict for the service
-    analysis = reasoning_service.generate_analysis(data.dict())
-    return analysis
+    try:
+        analysis = reasoning_service.generate_analysis(data.dict())
+        return analysis
+    except Exception as e:
+        logger.error(f"Reasoning Error: {str(e)}")
+        return {"error": str(e), "threat_summary": "Failed to generate AI analysis."}
