@@ -1,4 +1,5 @@
 from ninja import Router, Schema
+from typing import Optional, List
 from .services import reasoning_service
 import logging
 
@@ -8,13 +9,28 @@ router = Router()
 class ReasoningRequest(Schema):
     predicted_class: str
     confidence: float
-    threat_level: str
+    threat_level: Optional[str] = "HIGH"
 
-@router.post("/reason")
+# Define a response schema to ensure Ninja sends back clean data
+class ReasoningResponse(Schema):
+    threat_summary: str
+    recommendations: List[str]
+    risk_level: str
+    cve_context_used: str
+
+@router.post("/reason") 
 def reason_threat(request, data: ReasoningRequest):
     try:
-        analysis = reasoning_service.generate_analysis(data.dict())
+        
+        payload = data.dict()
+        analysis = reasoning_service.generate_analysis(payload)
         return analysis
     except Exception as e:
         logger.error(f"Reasoning Error: {str(e)}")
-        return {"error": str(e), "threat_summary": "Failed to generate AI analysis."}
+        
+        return {
+            "threat_summary": "AI Reasoning failed.",
+            "recommendations": ["Check logs"],
+            "risk_level": "UNKNOWN",
+            "cve_context_used": "Error"
+        }
