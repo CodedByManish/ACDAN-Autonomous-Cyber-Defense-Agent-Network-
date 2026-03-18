@@ -4,7 +4,7 @@ import time
 
 # Configuration
 BASE_URL = "http://127.0.0.1:8000/api"
-TIMEOUT = 120  # LLMs take a few seconds to "think"
+TIMEOUT = 120  # LLMs/RL models take time to initialize and process
 
 def send_request(endpoint: str, payload: dict) -> dict:
     url = f"{BASE_URL}/{endpoint}"
@@ -72,8 +72,7 @@ def test_full_system_flow():
     start_time = time.time()
     detection_results = send_request("detection/analyze", payload)
 
-    if not detection_results:
-        return
+    if not detection_results: return
 
     is_threat = detection_results.get("is_threat", False)
     threat_type = detection_results.get("threat_type", "Unknown")
@@ -90,7 +89,6 @@ def test_full_system_flow():
     if is_threat:
         print("\n[PHASE 2] Initiating LLM Reasoning & RAG Lookup...")
         
-        # Prepare data for Reasoning (mapping Phase 1 output to Phase 2 input)
         reasoning_payload = {
             "predicted_class": threat_type,
             "confidence": confidence,
@@ -100,24 +98,35 @@ def test_full_system_flow():
         start_time = time.time()
         reasoning_results = send_request("reasoning/reason", reasoning_payload)
 
-        if reasoning_results:
-            print(f"  > Risk Level   : {reasoning_results.get('risk_level')}")
-            print(f"  > RAG Context  : {reasoning_results.get('cve_context_used')}")
-            print(f"\n  > AI SUMMARY   :")
-            print(f"    {reasoning_results.get('threat_summary')}")
-            
-            recommendations = reasoning_results.get('recommendations', [])
-            if isinstance(recommendations, list):
-                print(f"\n  > MITIGATION STEPS:")
-                for step in recommendations:
-                    print(f"    - {step}")
-            
-            print(f"\n  > Process Time: {time.time() - start_time:.2f}s")
+        if not reasoning_results: return
 
-            # ------------------------------------------------
-            # PHASE 3: RESPONSE (Future Implementation)
-            # ------------------------------------------------
-            print("\n[PHASE 3] Response Agent status: Awaiting Policy Configuration.")
+        risk_level = reasoning_results.get('risk_level', 'MEDIUM')
+        print(f"  > Risk Level   : {risk_level}")
+        print(f"  > RAG Context  : {reasoning_results.get('cve_context_used')}")
+        print(f"\n  > AI SUMMARY   :")
+        print(f"    {reasoning_results.get('threat_summary')}")
+        
+        print(f"\n  > Process Time: {time.time() - start_time:.2f}s")
+
+        # ------------------------------------------------
+        # PHASE 3: RESPONSE (RL AGENT)
+        # ------------------------------------------------
+        print("\n[PHASE 3] Initiating RL Response Agent...")
+        
+        response_payload = {
+            "predicted_class": threat_type,
+            "risk_level": risk_level
+        }
+        
+        start_time = time.time()
+        response_results = send_request("response/execute", response_payload)
+
+        if response_results:
+            print(f"  > RL DECISION  : 🛡️ {response_results.get('recommended_action')}")
+            print(f"  > Confidence   : {response_results.get('confidence_score')}")
+            print(f"  > Rationale    : {response_results.get('rationale')}")
+            print(f"  > System Load  : {response_results.get('impact_on_system')}")
+            print(f"  > Process Time : {time.time() - start_time:.2f}s")
             
     else:
         print("\nResult: BENIGN - System remains in monitoring mode.")
