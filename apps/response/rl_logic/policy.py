@@ -4,14 +4,10 @@ Training loop and policy management for RL agent.
 
 import numpy as np
 from typing import Dict, List, Tuple
-import sys
 from pathlib import Path
 import json
-
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
-from dqn_agent import DQNAgent
-from environment import ThreatResponseEnvironment, ResponseActions
+from apps.response.rl_logic.dqn_agent import DQNAgent
+from apps.response.rl_logic.environment import ThreatResponseEnvironment, ResponseActions
 
 
 class ResponsePolicy:

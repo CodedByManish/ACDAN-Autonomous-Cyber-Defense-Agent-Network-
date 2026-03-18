@@ -4,7 +4,7 @@ import time
 
 # Configuration
 BASE_URL = "http://127.0.0.1:8000/api"
-TIMEOUT = 120  # LLMs/RL models take time to initialize and process
+TIMEOUT = 200  # LLMs/RL models take time to initialize and process
 
 def send_request(endpoint: str, payload: dict) -> dict:
     url = f"{BASE_URL}/{endpoint}"
