@@ -1,3 +1,11 @@
+import sys
+from pathlib import Path
+
+path_root = Path(__file__).parents[1]
+sys.path.append(str(path_root))
+
+
+
 from apps.response.rl_logic.policy import ResponsePolicy
 
 def main():
