@@ -16,7 +16,7 @@
 - Use local LLM for reasoning
 
 
----
+
 
 ## CHAPTER 2: LITERATURE REVIEW
 
@@ -32,7 +32,6 @@
 - DQN theory for mitigation agent
 
 
----
 
 ## CHAPTER 3: SYSTEM ANALYSIS & DESIGN
 
@@ -50,7 +49,6 @@
 - Threat Logs
 
 
----
 
 ## CHAPTER 4: IMPLEMENTATION
 
@@ -70,7 +68,6 @@
 - Connect all three phases through API
 
 
----
 
 ## CHAPTER 5: TESTING & RESULTS
 
@@ -87,7 +84,6 @@
 - Results from `test_pipeline.py`
 
 
----
 
 ## CHAPTER 6: CONCLUSION & FUTURE WORK
 
@@ -100,3 +96,4 @@
 ### 6.3 Future Enhancements
 - Multi-agent collaboration
 - Real-time packet blocking
+
