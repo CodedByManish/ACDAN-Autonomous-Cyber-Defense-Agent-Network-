@@ -5,8 +5,6 @@
 
 ACDAN is an end-to-end, multi-agent cybersecurity framework designed to automate the **Detect-Reason-Respond** lifecycle. It bridges the gap between raw traffic analysis and executive mitigation by combining Deep Learning, RAG-powered LLMs, and Reinforcement Learning into a unified autonomous pipeline.
 
-> **Research Note:** This system is specifically optimized for high-fidelity reasoning on edge-constrained hardware (8GB RAM). By utilizing 4-bit quantization and strategic data balancing, ACDAN proves that sophisticated autonomous defense is possible without high-cost enterprise infrastructure.
-
 ---
 
 ## ⚡ Core Features
@@ -82,7 +80,7 @@ The RL agent transitions from random exploration to high-reward mitigation strat
 | :--- | :--- |
 | **Detection Accuracy** | 86.76% (Validated on 876K Balanced Samples) |
 | **Inference Latency (ML)** | ~0.8s |
-| **Reasoning Latency (LLM)** | ~90s (Local 4-bit Quantized) |
+| **Reasoning Latency (LLM)** | (shown higher in my Local 4-bit Quantized) |
 | **Feature Set** | 79 Bi-directional Flow Features |
 | **Hardware Environment** | 8GB RAM / 4GB VRAM (Single Node) |
 
