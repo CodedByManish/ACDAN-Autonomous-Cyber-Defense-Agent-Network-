@@ -3,6 +3,8 @@ django
 djangorestframework
 django-cors-headers
 channels[daphne]      # For WebSockets 
+fastapi 
+uvicorn
 
 # Data Science & ML
 torch

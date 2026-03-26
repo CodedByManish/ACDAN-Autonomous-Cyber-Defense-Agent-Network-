@@ -1,17 +1,15 @@
-# apps/detection/schemas.py
-from ninja import Schema
-from typing import Optional, Dict, Any
+from pydantic import BaseModel, Field
+from typing import Dict, Any
 
-class IngestLogRequest(Schema):
+class IngestLogRequest(BaseModel):
     source_ip: str
     dest_ip: str
     protocol: str
     port: int
     duration: int
-    # This allows you to pass the dictionary of 79 features
-    features: Dict[str, float] 
+    features: Dict[str, float]
 
-class PredictionResponse(Schema):
+class PredictionResponse(BaseModel):
     is_threat: bool
     threat_type: str
     confidence_score: float

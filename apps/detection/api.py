@@ -1,30 +1,28 @@
-from ninja import Router
+from fastapi import APIRouter, HTTPException
 from .schemas import IngestLogRequest, PredictionResponse
 from .services import detection_service
-from .models import ThreatAlert
+# Note: Database logic will be handled via an Async ORM later
 
-router = Router()
+router = APIRouter(prefix="/detection", tags=["Detection"])
 
-@router.post("/analyze")
-def analyze_packet(request, data: IngestLogRequest):
-    # Pass the WHOLE features dictionary from the request to the model
-    prediction = detection_service.predict(data.features)
-
-    if prediction["threat_level"] in ["HIGH", "CRITICAL"]:
-        ThreatAlert.objects.create(
-            attack_type=prediction["predicted_class"],
-            source_ip=data.source_ip,
-            dest_ip=data.dest_ip,
-            risk_level=prediction["threat_level"],
-            confidence=prediction["confidence"],
-            threat_summary=f"Detected {prediction['predicted_class']} targeting {data.dest_ip}",
-        )
-
-    # Map the engine output to your PredictionResponse schema
-    return {
-        "is_threat": prediction["threat_level"] != "LOW",
-        "threat_type": prediction["predicted_class"],
-        "confidence_score": prediction["confidence"],
-        "recommended_action": "Isolate IP" if prediction["threat_level"] == "CRITICAL" else "Monitor",
-        "metadata": prediction["all_probabilities"],
-    }
+@router.post("/analyze", response_model=PredictionResponse)
+async def analyze_packet(data: IngestLogRequest):
+    try:
+        # We use 'async' because FastAPI thrives on non-blocking calls
+        prediction = detection_service.predict(data.features)
+        
+        # Determine threat status
+        is_threat = prediction["threat_level"] != "LOW"
+        
+        # Logic for 'Recommended Action' (Keeping your existing logic)
+        action = "Isolate IP" if prediction["threat_level"] == "CRITICAL" else "Monitor"
+        
+        return {
+            "is_threat": is_threat,
+            "threat_type": prediction["predicted_class"],
+            "confidence_score": prediction["confidence"],
+            "recommended_action": action,
+            "metadata": prediction["all_probabilities"],
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
