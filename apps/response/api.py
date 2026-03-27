@@ -1,26 +1,22 @@
-from ninja import Router, Schema
+from fastapi import APIRouter, HTTPException
+from .schemas import ResponseRequest, ResponseResponse
 from .services import response_service
 
-router = Router()
+router = APIRouter(prefix="/response", tags=["Response & Mitigation"])
 
-class ResponseRequest(Schema):
-    predicted_class: str
-    risk_level: str
-
-@router.post("/execute")
-def execute_response(request, data: ResponseRequest):
+@router.post("/execute", response_model=ResponseResponse)
+async def execute_response(data: ResponseRequest):
     """
-    Final Stage of ACDAN: Determines the best mitigation strategy using RL.
+    Executes the optimal mitigation strategy using a Deep Q-Network.
     """
     try:
         result = response_service.determine_action(
-            predicted_class=data.predicted_class, 
+            predicted_class=data.predicted_class,
             risk_level=data.risk_level
         )
         return result
     except Exception as e:
-        return {
-            "status": "error",
-            "message": str(e),
-            "recommended_action": "ALERT_ADMIN" # Fail-safe action
-        }
+        raise HTTPException(
+            status_code=500, 
+            detail=f"RL Mitigation Engine Error: {str(e)}"
+        )
