@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 # Import your finalized routers
 from apps.reasoning.api import router as reasoning_router
 from apps.response.api import router as response_router
-# from apps.detection.api import router as detection_router # Assuming detection is ready
+from apps.detection.api import router as detection_router
 
 app = FastAPI(
     title="ACDAN: AI-Powered Cyber Defense System",
@@ -34,7 +34,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 # 3. Include App Routers
 app.include_router(reasoning_router)
 app.include_router(response_router)
-# app.include_router(detection_router)
+app.include_router(detection_router)
 
 @app.get("/")
 async def root():
