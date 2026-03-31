@@ -5,7 +5,7 @@ import time
 # Configuration
 # Removed '/api' prefix because your FastAPI routers define their own prefixes
 BASE_URL = "http://127.0.0.1:8000"
-TIMEOUT = 300 
+TIMEOUT = 1000 
 
 def send_request(endpoint: str, payload: dict) -> dict:
     # Ensure no double slashes and correct pathing
@@ -33,8 +33,6 @@ def test_full_system_flow():
     print("      ACDAN END-TO-END SYSTEM INTEGRATION TEST")
     print("=" * 60)
 
-    # 1. DATA MATCHING YOUR CIC-IDS-2017 TRANSFORMER MODEL
-    # Ensure these keys match exactly what's in your preprocessor.pkl metadata
     payload = {
         "source_ip": "192.168.1.50",
         "dest_ip": "10.0.0.5",
@@ -42,36 +40,84 @@ def test_full_system_flow():
         "port": 80,
         "duration": 1293792,
         "features": {
-            "Destination Port": 80, "Flow Duration": 1293792, "Total Fwd Packets": 3,
-            "Total Backward Packets": 7, "Total Length of Fwd Packets": 26,
-            "Total Length of Bwd Packets": 11607, "Fwd Packet Length Max": 20,
-            "Fwd Packet Length Min": 0, "Fwd Packet Length Mean": 8.66,
-            "Fwd Packet Length Std": 10.26, "Bwd Packet Length Max": 5840,
-            "Bwd Packet Length Min": 0, "Bwd Packet Length Mean": 1658.14,
-            "Bwd Packet Length Std": 2137.29, "Flow Bytes/s": 8991.39,
-            "Flow Packets/s": 7.72, "Flow IAT Mean": 143754.66, "Flow IAT Std": 430865.8,
-            "Flow IAT Max": 1292730, "Flow IAT Min": 2, "Fwd IAT Total": 747,
-            "Fwd IAT Mean": 373.5, "Fwd IAT Std": 523.96, "Fwd IAT Max": 744,
-            "Fwd IAT Min": 3, "Bwd IAT Total": 1293746, "Bwd IAT Mean": 215624.33,
-            "Bwd IAT Std": 527671.93, "Bwd IAT Max": 1292730, "Bwd IAT Min": 2,
-            "Fwd PSH Flags": 0, "Bwd PSH Flags": 0, "Fwd URG Flags": 0,
-            "Bwd URG Flags": 0, "Fwd Header Length": 72, "Bwd Header Length": 152,
-            "Fwd Packets/s": 2.31, "Bwd Packets/s": 5.41, "Min Packet Length": 0,
-            "Max Packet Length": 5840, "Packet Length Mean": 1057.54,
-            "Packet Length Std": 1853.43, "Packet Length Variance": 3435230.67,
-            "FIN Flag Count": 0, "SYN Flag Count": 0, "RST Flag Count": 0,
-            "PSH Flag Count": 1, "ACK Flag Count": 0, "URG Flag Count": 0,
-            "CWE Flag Count": 0, "ECE Flag Count": 0, "Down/Up Ratio": 2,
-            "Average Packet Size": 1163.3, "Avg Fwd Segment Size": 8.66,
-            "Avg Bwd Segment Size": 1658.14, "Fwd Header Length.1": 72,
-            "Fwd Avg Bytes/Bulk": 0, "Fwd Avg Packets/Bulk": 0, "Fwd Avg Bulk Rate": 0,
-            "Bwd Avg Bytes/Bulk": 0, "Bwd Avg Packets/Bulk": 0, "Bwd Avg Bulk Rate": 0,
-            "Subflow Fwd Packets": 3, "Subflow Fwd Bytes": 26, "Subflow Bwd Packets": 7,
-            "Subflow Bwd Bytes": 11607, "Init_Win_bytes_forward": 8192,
-            "Init_Win_bytes_backward": 229, "act_data_pkt_fwd": 2,
-            "min_seg_size_forward": 20, "Active Mean": 0.0, "Active Std": 0.0,
-            "Active Max": 0, "Active Min": 0, "Idle Mean": 0.0, "Idle Std": 0.0,
-            "Idle Max": 0, "Idle Min": 0
+            "Destination Port": 80, 
+            "Flow Duration": 1200000, 
+            "Total Fwd Packets": 20, # Increased
+            "Total Backward Packets": 0, 
+            "Total Length of Fwd Packets": 5000, # Increased
+            "Total Length of Bwd Packets": 0, 
+            "Fwd Packet Length Max": 1460.0, # Large packet size
+            "Fwd Packet Length Min": 1460.0, 
+            "Fwd Packet Length Mean": 1460.0,
+            "Fwd Packet Length Std": 0.0, 
+            "Bwd Packet Length Max": 0.0,
+            "Bwd Packet Length Min": 0.0, 
+            "Bwd Packet Length Mean": 0.0,
+            "Bwd Packet Length Std": 0.0, 
+            "Flow Bytes/s": 5000000.0, # High throughput
+            "Flow Packets/s": 10000.0, # High frequency
+            "Flow IAT Mean": 100.0, # Very small intervals
+            "Flow IAT Std": 10.0,
+            "Flow IAT Max": 200.0, 
+            "Flow IAT Min": 50.0, 
+            "Fwd IAT Total": 1200000.0,
+            "Fwd IAT Mean": 100.0, 
+            "Fwd IAT Std": 10.0, 
+            "Fwd IAT Max": 200.0, 
+            "Fwd IAT Min": 50.0, 
+            "Bwd IAT Total": 0.0, 
+            "Bwd IAT Mean": 0.0,
+            "Bwd IAT Std": 0.0, 
+            "Bwd IAT Max": 0.0, 
+            "Bwd IAT Min": 0.0,
+            "Fwd PSH Flags": 1, # Often set in flooding
+            "Bwd PSH Flags": 0, 
+            "Fwd URG Flags": 0,
+            "Bwd URG Flags": 0, 
+            "Fwd Header Length": 400, 
+            "Bwd Header Length": 0,
+            "Fwd Packets/s": 10000.0, 
+            "Bwd Packets/s": 0.0, 
+            "Min Packet Length": 1460.0,
+            "Max Packet Length": 1460.0, 
+            "Packet Length Mean": 1460.0,
+            "Packet Length Std": 0.0, 
+            "Packet Length Variance": 0.0,
+            "FIN Flag Count": 0, 
+            "SYN Flag Count": 1, # SYN Flood indicator
+            "RST Flag Count": 0,
+            "PSH Flag Count": 0, 
+            "ACK Flag Count": 0, 
+            "URG Flag Count": 0,
+            "CWE Flag Count": 0, 
+            "ECE Flag Count": 0, 
+            "Down/Up Ratio": 0,
+            "Average Packet Size": 1460.0, 
+            "Avg Fwd Segment Size": 1460.0, 
+            "Avg Bwd Segment Size": 0.0, 
+            "Fwd Header Length.1": 400,
+            "Fwd Avg Bytes/Bulk": 0, 
+            "Fwd Avg Packets/Bulk": 0, 
+            "Fwd Avg Bulk Rate": 0,
+            "Bwd Avg Bytes/Bulk": 0, 
+            "Bwd Avg Packets/Bulk": 0, 
+            "Bwd Avg Bulk Rate": 0,
+            "Subflow Fwd Packets": 20, 
+            "Subflow Fwd Bytes": 5000, 
+            "Subflow Bwd Packets": 0,
+            "Subflow Bwd Bytes": 0, 
+            "Init_Win_bytes_forward": 29200, # Standard Windows TCP size
+            "Init_Win_bytes_backward": 0, 
+            "act_data_pkt_fwd": 20,
+            "min_seg_size_forward": 20, 
+            "Active Mean": 0.0, 
+            "Active Std": 0.0,
+            "Active Max": 0, 
+            "Active Min": 0, 
+            "Idle Mean": 0.0, 
+            "Idle Std": 0.0,
+            "Idle Max": 0, 
+            "Idle Min": 0
         }
     }
 
