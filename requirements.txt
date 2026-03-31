@@ -1,37 +1,22 @@
-# Web Framework
-django
-djangorestframework
-django-cors-headers
-channels[daphne]      # For WebSockets 
-fastapi 
+# Core Backend
+fastapi
 uvicorn
+python-dotenv
+requests
 
-# Data Science & ML
+# ML & Detection (ML logic & Preprocessing)
 torch
-torchvision
-torchaudio
 numpy
 pandas
 scikit-learn
-scipy
 joblib
-ninja
-matplotlab
 
-# NLP & RAG
-transformers
+# RAG & Intelligence
+faiss-cpu
 sentence-transformers
 ollama
-faiss-cpu
-
-# Database & Services
-redis
-elasticsearch
-python-dotenv
-requests
-pytz
-pyyaml
 
 # Utilities
-pydantic            
+pydantic
 pydantic-settings
+pyyaml
