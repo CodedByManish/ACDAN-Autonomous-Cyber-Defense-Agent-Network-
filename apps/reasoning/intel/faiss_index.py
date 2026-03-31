@@ -13,6 +13,10 @@ class FAISSIndex:
         self.documents = []
         self.metadata = []
     
+    def is_initialized(self, filepath: str) -> bool:
+        """Check if both the index and metadata files exist."""
+        return os.path.exists(filepath) and os.path.exists(filepath + ".meta")
+
     def add_documents(self, embeddings: np.ndarray, documents: List[str], metadata: List[Dict] = None) -> None:
         if embeddings.dtype != np.float32:
             embeddings = embeddings.astype(np.float32)
@@ -20,9 +24,12 @@ class FAISSIndex:
         self.index.add(embeddings)
         self.documents.extend(documents)
         self.metadata.extend(metadata if metadata else [{} for _ in documents])
-        print(f"Added {len(documents)} documents. Index size: {self.index.ntotal}")
+        print(f"✅ Added {len(documents)} docs. Current Total: {self.index.ntotal}")
     
     def search(self, query_embedding: np.ndarray, k: int = 5) -> List[Tuple]:
+        if self.index.ntotal == 0:
+            return []
+            
         if query_embedding.dtype != np.float32:
             query_embedding = query_embedding.astype(np.float32)
         
@@ -37,30 +44,29 @@ class FAISSIndex:
     
     def save(self, filepath: str) -> None:
         """Saves index natively and metadata via pickle."""
-        # 1. Save the FAISS index (C++ object)
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
         faiss.write_index(self.index, filepath)
         
-        # 2. Save the Python lists (Metadata)
         meta_path = filepath + ".meta"
         with open(meta_path, 'wb') as f:
-            pickle.dump({'docs': self.documents, 'meta': self.metadata, 'dim': self.embedding_dim}, f)
-        
-        print(f"Index saved: {filepath} and {meta_path}")
+            pickle.dump({
+                'docs': self.documents, 
+                'meta': self.metadata, 
+                'dim': self.embedding_dim
+            }, f)
+        print(f"💾 Index & Meta saved to: {filepath}")
     
     def load(self, filepath: str) -> None:
         """Loads index natively and metadata via pickle."""
-        if not os.path.exists(filepath):
-            raise FileNotFoundError(f"Index file not found: {filepath}")
+        if not self.is_initialized(filepath):
+            raise FileNotFoundError(f"Index components missing at: {filepath}")
 
-        # 1. Load native FAISS index
         self.index = faiss.read_index(filepath)
         
-        # 2. Load Python metadata
         meta_path = filepath + ".meta"
         with open(meta_path, 'rb') as f:
             data = pickle.load(f)
             self.documents = data['docs']
             self.metadata = data['meta']
             self.embedding_dim = data['dim']
-        
-        print(f"Index loaded. Size: {self.index.ntotal}")
+        print(f"📖 Index loaded successfully. Size: {self.index.ntotal}")
