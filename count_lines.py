@@ -1,6 +1,10 @@
+
+    # ------------------------------------------------
+    # JUST TO COUNT LINES OF CODE IN THE REPO 
+    # ------------------------------------------------
+
 import subprocess
 
-# 1️⃣ Get all commits in the repo
 result_commits = subprocess.run(
     ['git', 'rev-list', '--all', '--count'],
     capture_output=True, text=True
