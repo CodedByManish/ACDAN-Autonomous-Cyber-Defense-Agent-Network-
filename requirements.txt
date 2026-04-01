@@ -20,3 +20,5 @@ ollama
 pydantic
 pydantic-settings
 pyyaml
+
+scapy
